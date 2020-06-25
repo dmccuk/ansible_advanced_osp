@@ -1,0 +1,11 @@
+---
+servers:
+  - name: app1
+  - name: app2
+  - name: db
+  - name: frontend
+
+server_app:
+  - name: app1
+  - name: app2
+
