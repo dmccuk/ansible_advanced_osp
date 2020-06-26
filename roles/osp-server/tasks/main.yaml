@@ -6,7 +6,7 @@
     image: rhel-guest
     flavor: m1.medium
     key_name: ansible_ssh
-    security_groups: apps
+    security_groups: "{{ item.group }}"
     wait: no
     nics:
       - net-name: int_network
@@ -15,43 +15,7 @@
       #!/bin/bash
       curl -o /tmp/openstack.pub http://www.opentlc.com/download/ansible_bootcamp/openstack_keys/openstack.pub
       cat /tmp/openstack.pub >> /home/cloud-user/.ssh/authorized_keys
-  loop: "{{ server_app }}"
-
-- name: launch db instance
-  os_server:
-    cloud: openstack
-    state: present
-    name: db
-    image: rhel-guest
-    flavor: m1.medium
-    key_name: ansible_ssh
-    security_groups: db
-    wait: no
-    nics:
-      - net-name: int_network
-    meta: "group=apps, deployment_name=QA"
-    userdata: |
-      #!/bin/bash
-      curl -o /tmp/openstack.pub http://www.opentlc.com/download/ansible_bootcamp/openstack_keys/openstack.pub
-      cat /tmp/openstack.pub >> /home/cloud-user/.ssh/authorized_keys
-
-- name: launch frontend instance
-  os_server:
-    cloud: openstack
-    state: present
-    name: frontend
-    image: rhel-guest
-    flavor: m1.medium
-    key_name: ansible_ssh
-    security_groups: frontend
-    wait: no
-    nics:
-      - net-name: int_network
-    meta: "group=apps, deployment_name=QA"
-    userdata: |
-      #!/bin/bash
-      curl -o /tmp/openstack.pub http://www.opentlc.com/download/ansible_bootcamp/openstack_keys/openstack.pub
-      cat /tmp/openstack.pub >> /home/cloud-user/.ssh/authorized_keys
+  loop: "{{ servers }}"
 
 
 - name: Add floating IP to instance

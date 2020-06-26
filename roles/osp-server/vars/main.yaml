@@ -1,11 +1,15 @@
 ---
 servers:
   - name: app1
+    group: apps
   - name: app2
+    group: apps
   - name: db
+    group: db
   - name: frontend
+    group: frontend
 
-server_app:
-  - name: app1
-  - name: app2
+#server_app:
+#  - name: app1
+#  - name: app2
 
