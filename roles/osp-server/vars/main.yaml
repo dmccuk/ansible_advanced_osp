@@ -2,14 +2,14 @@
 servers:
   - name: app1
     group: apps
+    meta: apps
   - name: app2
     group: apps
+    meta: apps
   - name: db
     group: db
+    meta: appdbs
   - name: frontend
     group: frontend
-
-#server_app:
-#  - name: app1
-#  - name: app2
+    meta: frontends
 

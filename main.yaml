@@ -1,0 +1,41 @@
+---
+- hosts: localhost
+  roles:
+    - ops-hosts
+
+- hosts: all
+  gather_facts: false # remove later! speeds up testing
+  become: true
+  vars:
+    ansible_ssh_user: cloud-user
+    ansible_ssh_private_key_file: ~/.ssh/test_id_rsa
+  roles:
+    - {name: common, tags: common}
+
+- hosts: frontends
+  gather_facts: false # remove later! speeds up testing
+  become: true
+  vars:
+    ansible_ssh_user: cloud-user
+    ansible_ssh_private_key_file: ~/.ssh/test_id_rsa
+  roles:
+    - {name: deploy_haproxy, tags: deploy_haproxy}
+
+- hosts: apps
+  gather_facts: true
+  become: true
+  vars:
+    ansible_ssh_user: cloud-user
+    ansible_ssh_private_key_file: ~/.ssh/test_id_rsa
+  roles:
+    - {name: deploy_tomcat, tags: deploy_tomcat}
+    - {name: deploy_apache, tags: deploy_apache}
+
+- hosts: appdbs
+  become: true
+  vars:
+    ansible_ssh_user: cloud-user
+    ansible_ssh_private_key_file: ~/.ssh/test_id_rsa
+  roles:
+    - {name: geerlingguy.postgresql, tags: postgresql}
+
